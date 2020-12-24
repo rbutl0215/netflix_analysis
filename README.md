@@ -1,6 +1,5 @@
-# netflix_analysis
+# File Descriptions
 
-File Descriptions
   * netflix_titles.csv - publicly avialable title information from kaggle
   * create_graph_edges.py - takes the netflix_titles.csv as an input and outputs a table of all actors who have starred in a movie or series together
   * working_realtionships.csv - output from create_graph_edges.py
