@@ -29,7 +29,7 @@ def draw_graph(G_):
 
 def eigenvector_centrality(G_):
     centrality = nx.eigenvector_centrality(G_)
-    centrality = dict(sorted(centrality.items(), key=lambda item: item[1]))
+    centrality = dict(sorted(centrality.items(), key=lambda item: item[1], reverse=True))
     json_object = json.dumps(centrality, indent=4)
     with open("eigenvector_centrality.json", "w") as outfile: 
         outfile.write(json_object) 
