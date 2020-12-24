@@ -2,7 +2,8 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import pandas
 import json 
-import operator 
+import operator
+import functions_sub_pkg.functions as sb 
 
 def read_data():
     df = pandas.read_csv('working_relationships.csv')
@@ -37,7 +38,7 @@ def eigenvector_centrality(G_):
 
 
 def main():
-    df = read_data()
+    df = sb.read_data("working_relationships.csv")
     G = init_graph()
     G = add_edges(G,df)
     eigenvector_centrality(G)

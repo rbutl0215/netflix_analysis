@@ -1,36 +1,13 @@
 import pandas
 import numpy
-
-def read_data():
-    df = pandas.read_csv('netflix_titles.csv')
-    df = df.dropna()
-    df = df[df.country == 'United States']
-    return df
-
-#create function to pick out a specific name from a list based on some limiting criteria in the director and cast fields
-
-def pick_name(names_list, which_name):
-    names_list = str(names_list)
-    num_com = names_list.count(',')
-    if(which_name == 0 and num_com == 0):
-        return names_list
-    elif(which_name != 0 and num_com ==0):
-        return ""
-    elif(which_name > num_com):      
-        return ""
-    else:
-        return names_list.split(',')[which_name]
-
-def take_three(string):
-    string = str(string)
-    return string[0:3]
+import functions_sub_pkg.functions as sb
 
 #use function to transform columns of listed names into multiple columns for every unique name listed 
 def create_new_columns(df_):
     for i in range(0,15):
         j = i+1
         col_name = 'act'+str(j)
-        df_[col_name] = df_.apply(lambda row : pick_name(row['cast'],i), axis = 1)
+        df_[col_name] = df_.apply(lambda row : sb.pick_name(row['cast'],i), axis = 1)
     return
 
 def format_two_people(df_):
@@ -62,16 +39,19 @@ def format_two_people(df_):
     act_dir_unpivot['posb'] = act_dir_unpivot['posb'].str.strip()
     return act_dir_unpivot
 
-def output_data(df_):
+def movie_length_by_rating(df_):
+    df_ = df_[df_.type == 'Movie']
+    df_['mins'] = df_.apply(lambda row: str(row['duration']).split(' ')[0], axis = 1)
+    df_ = df_.astype({'mins':'int32'})
+    df_length_by_rating = df_.groupby('rating')['mins'].mean()
+    return df_length_by_rating
 
-    df_.to_csv('working_relationships.csv', index = False)
-    return
 
 def main():
-    df = read_data()
+    df = sb.read_data("netflix_titles.csv",True,True)
     create_new_columns(df)
     df = format_two_people(df)
-    output_data(df)
+    sb.output_data(df,"working_relationships.csv")
 
 if __name__ == "__main__":
     main()
