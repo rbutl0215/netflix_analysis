@@ -1,6 +1,7 @@
 import pandas
 import numpy
 import functions_sub_pkg.functions as sb
+import matplotlib.pyplot as plt
 
 #use function to transform columns of listed names into multiple columns for every unique name listed 
 def create_new_columns(df_):
@@ -39,19 +40,20 @@ def format_two_people(df_):
     act_dir_unpivot['posb'] = act_dir_unpivot['posb'].str.strip()
     return act_dir_unpivot
 
+#preliminary function to diplay sorted by chart
 def movie_length_by_rating(df_):
     df_ = df_[df_.type == 'Movie']
     df_['mins'] = df_.apply(lambda row: str(row['duration']).split(' ')[0], axis = 1)
-    df_ = df_.astype({'mins':'int32'})
-    df_length_by_rating = df_.groupby('rating')['mins'].mean()
-    return df_length_by_rating
+    df_ = df_.astype({'mins':'float'})
+    sb.display_bar_chart(df_,'rating','mins')
+    return
 
 
 def main():
     df = sb.read_data("netflix_titles.csv",True,True)
     create_new_columns(df)
     df = format_two_people(df)
-    sb.output_data(df,"working_relationships.csv")
+    sb.output_data(df,'working_relationships.csv')
 
 if __name__ == "__main__":
     main()
