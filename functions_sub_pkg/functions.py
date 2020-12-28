@@ -1,5 +1,6 @@
 import pandas
 import numpy
+import matplotlib.pyplot as plt 
 
 def pick_name(names_list, which_name):
     names_list = str(names_list)
@@ -28,3 +29,9 @@ def read_data(string,dropna = False,filter_us = False):
     if(filter_us):   
         df = df[df.country == 'United States']
     return df
+
+def display_bar_chart(df_,x_axis,y_axis):
+    df_length_by_rating = df_.groupby(x_axis).agg(average_duration = pandas.NamedAgg(column = y_axis, aggfunc ='mean'))
+    df_length_by_rating = df_length_by_rating.sort_values(['average_duration'])
+    df_length_by_rating.reset_index().plot.bar(x_axis,'average_duration',rot=0)
+    plt.show()
